@@ -7,6 +7,8 @@
   PlaneGeometry,
   LocomotionEnvironment,
   EnvironmentType,
+  AssetManager,
+  AssetType,
 } from '@iwsdk/core';
 
 import {
@@ -17,7 +19,13 @@ import {
 
 import { PanelSystem } from './panel.js'; // system for displaying "Enter VR" panel on Quest 1
 
-const assets = { };
+const assets = { 
+  plantSansevieria: {
+    url: '/gltf/plantSansevieria/plantSansevieria.gltf',
+    type: AssetType.GLTF,
+    priority: 'critical',
+  },
+};
 
 World.create(document.getElementById('scene-container'), {
   assets,
@@ -34,6 +42,12 @@ World.create(document.getElementById('scene-container'), {
 }).then((world) => {
 
   const { camera } = world;
+
+   // Load and add the plant model
+  const plantModel = AssetManager.getGLTF('plantSansevieria').scene;
+  const plantEntity = world.createTransformEntity(plantModel);
+  plantEntity.object3D.position.set(0, 0, -2);
+  plantEntity.object3D.scale.set(2, 2, 2);
 
   
   // Create a green sphere
